@@ -1,33 +1,44 @@
 package pildoras.app.compose.tutorialappone.views
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MainView(
-    buttonTexts: List<String> = listOf("Arriba", "Abajo", "Derecha", "Isquierda"),
-    onClick: (index: Int) -> Unit = {}
-){
+fun MainView(){
+
+    var targetX by remember { mutableStateOf(0.dp) }
+    var targetY by remember { mutableStateOf(0.dp) }
+
+    var squareSize by remember { mutableStateOf(50.dp) }
+
+    // animaciones suaves hacia el objetivo
+    val animatedX: Dp by animateDpAsState(targetValue = targetX)
+    val animatedY: Dp by animateDpAsState(targetValue = targetY)
+
+    var squareColor by remember { mutableStateOf(Color(0xFF1E88E5)) }
+
+    // distancia que mueve cada pulsación
+    val step = 40.dp
+
+    val colors = listOf(
+        Color(0xFF1E88E5), // azul
+        Color(0xFFE53935), // rojo
+        Color(0xFF43A047), // verde
+        Color(0xFFFDD835), // amarillo
+        Color(0xFF8E24AA), // morado
+        Color(0xFFFF7043)  // naranja
+    )
 
     Column( modifier = Modifier
         .fillMaxWidth(),
@@ -37,19 +48,15 @@ fun MainView(
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth().height(580.dp).padding(top = 50.dp),
+            modifier = Modifier.fillMaxWidth().height(500.dp).padding(top = 50.dp),
         ) {
 
-
-            Button(
-                onClick = { },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
-                modifier =   Modifier.width(150.dp).height(150.dp),
-                shape = RectangleShape
-            ) {
-                Text(text = "", color = Color.White)
-            }
-
+            Box(
+                modifier = Modifier
+                    .offset(x = animatedX, y = animatedY)
+                    .size(squareSize)
+                    .background(squareColor)
+            )
         }
 
         Row(
@@ -66,16 +73,68 @@ fun MainView(
                     verticalArrangement = Arrangement.spacedBy(5.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    buttonTexts.forEachIndexed { index, text ->
-                        Button(
-                            onClick = { onClick(index) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp)
-                        ) {
-                            Text(text)
-                        }
+                    // boton UP
+                    Button(
+                        onClick = { targetY -= step },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text("Arriba")
                     }
+
+                    // boton DOWN
+                    Button(
+                        onClick = { targetY += step },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text("Abajo")
+                    }
+
+                    // boton Left
+                    Button(
+                        onClick = { targetX -= step },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text("Izquierda")
+                    }
+
+                    // boton Right
+                    Button(
+                        onClick = { targetX += step },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text("Derecha")
+                    }
+
+                    // boton tamaño
+                    Button(
+                        onClick = { squareSize += 5.dp },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text("Increase Size")
+                    }
+
+                    // boton Color
+                    Button(
+                        onClick = {
+                            val newColor = colors.filter { it != squareColor }.random()
+                            squareColor = newColor },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text("Color")
+                    }
+
                 }
             }
         }
@@ -88,7 +147,7 @@ fun MainView(
 fun PreviewBottomFourButtonsRow() {
     MaterialTheme {
         Surface {
-            MainView(onClick = { idx -> /* prueba: idx */ })
+            MainView()
         }
     }
 }

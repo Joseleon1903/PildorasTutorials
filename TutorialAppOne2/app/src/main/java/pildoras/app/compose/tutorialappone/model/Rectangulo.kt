@@ -1,6 +1,9 @@
 package pildoras.app.compose.tutorialappone.model
 
-class Rectangulo (var color: Int, var ancho:Int ,var alto :Int){
+import androidx.compose.animation.scaleOut
+import androidx.compose.ui.graphics.Color
+
+class Rectangulo (var color: Color, var ancho: Int, var alto: Int){
 
   // coordenadas
   var _x :Int = 0;
@@ -28,8 +31,20 @@ class Rectangulo (var color: Int, var ancho:Int ,var alto :Int){
   }
 
   fun incresedSize( nAncho:Int,  nAlto:Int){
-    ancho=nAncho
-    alto=nAlto
+    println("execute incresedSize")
+    ancho +=nAncho
+    alto +=nAlto
+    println("param: nAncho"+ ancho)
+    println("param: nAlto"+ alto)
+  }
+
+  fun changeColor(){
+    println("execute changeColor")
+    if(color.equals(Color.Blue)){
+      color= Color.White;
+    }else{
+      color = Color.Blue;
+    }
   }
 
 }

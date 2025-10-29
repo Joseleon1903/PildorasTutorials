@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TutorialAppOneTheme {
-                MainView(onClick = { idx -> /* prueba: idx */ })
+                MainView()
             }
         }
     }
