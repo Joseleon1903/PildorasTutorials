@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import pildoras.app.compose.tutorialappone.ui.theme.TutorialAppOneTheme
+import pildoras.app.compose.tutorialappone.views.BoxComposableView
+import pildoras.app.compose.tutorialappone.views.FirstView
 import pildoras.app.compose.tutorialappone.views.MainView
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TutorialAppOneTheme {
-                MainView()
+                BoxComposableView()
             }
         }
     }
